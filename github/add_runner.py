@@ -77,6 +77,10 @@ if __name__ == "__main__":
         'https://github.com/ChristopherHX/github-act-runner/releases/download/v0.6.7/',
         'binary-linux-ppc64le.tar.gz',
         '0bfef19ae08e2c51e79c0459a2bab25339dd2a3e39afdbab52c6a10cf21308cf')
+    runners[('linux', 'riscv64')] = Runner(
+        'https://github.com/ChristopherHX/github-act-runner/releases/download/v0.6.7/',
+        'binary-linux-riscv64.tar.gz',
+        '92735e2c197d48f9950f7fff012e849d5165e4a1975a2ca9f9c08897cdd8b850')
     # windows
     runners[('windows', 'amd64')] = Runner(
         'https://github.com/actions/runner/releases/download/v2.311.0/',
@@ -101,7 +105,8 @@ if __name__ == "__main__":
             'arm64',
             'armv6',
             'i386',
-            'ppc64el'])
+            'ppc64el',
+            'riscv64'])
     parser.add_argument('--user', help='User for the service', required=True)
     parser.add_argument('--url', help='Github project url', required=True)
     parser.add_argument('--token', help='Github token', required=True)
