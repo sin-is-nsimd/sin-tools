@@ -91,16 +91,27 @@ if __name__ == "__main__":
         description='Add a new github action runner')
     parser.add_argument('--os', help='Operating system', required=True,
                         choices=['macos', 'linux', 'windows'])
-    parser.add_argument('--arch', help='Architecture', required=True,
-                        choices=['amd64', 'arm', 'arm64', 'armv6', 'i386', 'ppc64el'])
+    parser.add_argument(
+        '--arch',
+        help='Architecture',
+        required=True,
+        choices=[
+            'amd64',
+            'arm',
+            'arm64',
+            'armv6',
+            'i386',
+            'ppc64el'])
     parser.add_argument('--user', help='User for the service', required=True)
     parser.add_argument('--url', help='Github project url', required=True)
     parser.add_argument('--token', help='Github token', required=True)
     parser.add_argument('--directory', help='Output directory',
-                        default='/home/USER/actions-runner')
+                        default='HOME/actions-runner')
     args = parser.parse_args()
-    if args.directory == '/home/USER/actions-runner':
-        args.directory = '/home/' + args.user + '/actions-runner'
+
+    if args.directory == 'HOME/actions-runner':
+        home = '/home' if args.os == 'linux' else '/Users'
+        args.directory = f'{home}/{args.user}/actions-runner'
 
     if os.path.exists(args.directory):
         print(sin.term.tag_error(), 'Directory "' +
@@ -144,28 +155,80 @@ if __name__ == "__main__":
 
     # Service
 
-    service_path = os.path.join(args.directory, 'github-action-runner.service')
-    with open(service_path, 'w') as f:
-        f.write('[Unit]\n')
-        f.write('Description="Github CI service"\n')
-        f.write('\n')
-        f.write('[Service]\n')
-        f.write('User=' + args.user + '\n')
-        f.write('WorkingDirectory=' + args.directory + '\n')
-        f.write('ExecStart=bash ./run.sh\n')
-        f.write('Restart=always\n')
-        f.write('RestartSec=3\n')
-        f.write('\n')
-        f.write('[Install]\n')
-        f.write('WantedBy=multi-user.target\n')
+    if args.os == 'macos':
 
-    print('You can activate the service (with root access):')
-    print('```sh')
-    print('cp ' + service_path + ' /etc/systemd/system/')
-    print('systemctl enable github-action-runner.service')
-    print('service github-action-runner start')
-    print('service github-action-runner status')
-    print('```')
+        service_path = os.path.join(
+            args.directory, 'github-action-runner.plist')
+        with open(service_path, 'w') as f:
+            f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+            f.write(
+                '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n')
+            f.write('<plist version="1.0">\n')
+            f.write('    <dict>\n')
+            f.write('        <key>Label</key>\n')
+            f.write('        <string>github.action.runner</string>\n')
+            f.write('        <key>UserName</key>\n')
+            f.write('        <string>' + args.user + '</string>\n')
+            f.write('        <key>EnvironmentVariables</key>\n')
+            f.write('        <dict>\n')
+            f.write('            <key>PATH</key>\n')
+            f.write(
+                '            <string>/opt/homebrew/bin:/bin:/usr/bin:/usr/local/bin</string>\n')
+            f.write('        </dict>\n')
+            f.write('        <key>WorkingDirectory</key>\n')
+            f.write('        <string>' + args.directory + '</string>\n')
+            f.write('        <key>Program</key>\n')
+            f.write('        <string>' + args.directory + '/run.sh</string>\n')
+            f.write('        <key>StandardOutPath</key>\n')
+            f.write(
+                '        <string>' +
+                args.directory +
+                '/log/github_action_runner_out.log</string>\n')
+            f.write('        <key>StandardErrorPath</key>\n')
+            f.write(
+                '        <string>' +
+                args.directory +
+                '/log/github_action_runner_err.log</string>\n')
+            f.write('        <key>RunAtLoad</key>\n')
+            f.write('        <true/>\n')
+            f.write('        <key>KeepAlive</key>\n')
+            f.write('        <true/>\n')
+            f.write('    </dict>\n')
+            f.write('</plist>')
+
+        print('You can activate the service (with root access):')
+        print('```sh')
+        print('cp ' + service_path + ' /Library/LaunchAgents/')
+        print('launchctl load /Library/LaunchAgents/github-action-runner.plist')
+        print('launchctl start /Library/LaunchAgents/github-action-runner.plist')
+        print('launchctl print gui/$UID/github.action.runner')
+        print('```')
+
+    elif args.os == 'linux':
+
+        service_path = os.path.join(
+            args.directory, 'github-action-runner.service')
+        with open(service_path, 'w') as f:
+            f.write('[Unit]\n')
+            f.write('Description="Github CI service"\n')
+            f.write('\n')
+            f.write('[Service]\n')
+            f.write('User=' + args.user + '\n')
+            f.write('WorkingDirectory=' + args.directory + '\n')
+            f.write('ExecStart=bash ./run.sh\n')
+            f.write('Restart=always\n')
+            f.write('RestartSec=3\n')
+            f.write('\n')
+            f.write('[Install]\n')
+            f.write('WantedBy=multi-user.target\n')
+
+        print('You can activate the service (with root access):')
+        print('```sh')
+        print('cp ' + service_path + ' /etc/systemd/system/')
+        print('systemctl enable github-action-runner.service')
+        print('service github-action-runner start')
+        print('service github-action-runner status')
+        print('```')
 
     # End
 
