@@ -71,7 +71,7 @@ if __name__ == "__main__":
     runners[("linux", "arm64")] = Runner(
         "https://github.com/actions/runner/releases/download/v2.317.0/",
         "actions-runner-linux-arm64-2.317.0.tar.gz",
-        "7e8e2095d2c30bbaa3d2ef03505622b883d9cb985add6596dbe2f234ece308f3",
+        "9e883d210df8c6028aff475475a457d380353f9d01877d51cc01a17b2a91161d",
     )
     runners[("linux", "armv6")] = Runner(
         "https://github.com/ChristopherHX/github-act-runner/releases/download/v0.7.1/",
