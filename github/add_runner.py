@@ -32,12 +32,12 @@ sys.path.append(
         os.path.dirname(os.path.realpath(__file__)), "..", "..", "sin-python", "src"
     )
 )
-import sin.sh  # nopep8
-import sin.term  # nopep8
+import sin.sh
+import sin.term
 
 
 class Runner:
-    def __init__(self, url, archive_file, sha256):
+    def __init__(self, url: str, archive_file: str, sha256: str):
         self.url = url
         self.archive_file = archive_file
         self.sha256 = sha256
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         "https://github.com/ChristopherHX/github-act-runner/releases/download/v0.8.0/"
     )
 
-    runners = {}
+    runners: dict[tuple[str, str], Runner] = {}
     # macos
     runners[("macos", "amd64")] = Runner(
         base_url,
