@@ -45,71 +45,113 @@ class Runner:
 
 if __name__ == "__main__":
 
-    base_url = (
-        "https://github.com/ChristopherHX/github-act-runner/releases/download/v0.8.0/"
+    runners = {}
+
+    # https://github.com/actions/runner
+    base_url_gh = "https://github.com/actions/runner/releases/download/v2.320.0/"
+    # macos
+    runners[("macos", "amd64", "gh")] = Runner(
+        base_url_gh,
+        "actions-runner-osx-x64-2.320.0.tar.gz",
+        "11e610adc1c3721a806d2a439d03d143cceeda7a63e794bfe75b45da55e308df",
+    )
+    runners[("macos", "arm64", "gh")] = Runner(
+        base_url_gh,
+        "actions-runner-osx-arm64-2.320.0.tar.gz",
+        "14e2600c07ad76a1c9f6d9e498edf14f1c63f7f7f8d55de0653e450f64caa854",
+    )
+    # linux
+    runners[("linux", "amd64", "gh")] = Runner(
+        base_url_gh,
+        "actions-runner-linux-x64-2.320.0.tar.gz",
+        "93ac1b7ce743ee85b5d386f5c1787385ef07b3d7c728ff66ce0d3813d5f46900",
+    )
+    runners[("linux", "arm", "gh")] = Runner(
+        base_url_gh,
+        "actions-runner-linux-arm-2.320.0.tar.gz",
+        "b2212dbceeea27daf3c90441352851b2d1afcb736a76c2435a715c21daaa6f18",
+    )
+    runners[("linux", "arm64", "gh")] = Runner(
+        base_url_gh,
+        "actions-runner-linux-arm64-2.320.0.tar.gz",
+        "bec1832fe6d2ed75acf4b7d8f2ce1169239a913b84ab1ded028076c9fa5091b8",
+    )
+    # windows
+    runners[("windows", "amd64", "gh")] = Runner(
+        base_url_gh,
+        "actions-runner-win-x64-2.320.0.zip",
+        "9eb133e8cb25e8319f1cbef3578c9ec5428a7af7c6ec0202ba6f9a9fddf663c0",
+    )
+    runners[("windows", "arm64", "gh")] = Runner(
+        base_url_gh,
+        "actions-runner-win-arm64-2.320.0.zip",
+        "b92e6ce0facde2e7cedd502bb1b2ff99cebdb9c99caf77c65192986b8411e267",
     )
 
-    runners: dict[tuple[str, str], Runner] = {}
+    # https://github.com/ChristopherHX/github-act-runner
+    base_url_chx = (
+        "https://github.com/ChristopherHX/github-act-runner/releases/download/v0.8.0/"
+    )
     # macos
-    runners[("macos", "amd64")] = Runner(
-        base_url,
+    runners[("macos", "amd64", "chx")] = Runner(
+        base_url_chx,
         "binary-darwin-amd64.tar.gz",
         "ab5fb1996a6c1b87543d15d1973916d9d7a672931667dc5793e4efc076609741",
     )
-    runners[("macos", "arm64")] = Runner(
-        base_url,
+    runners[("macos", "arm64", "chx")] = Runner(
+        base_url_chx,
         "binary-darwin-arm64.tar.gz",
         "daaa2f3d3672eaec6921c23153551d2984d720a6bfa51916568ee2e379156203",
     )
     # linux
-    runners[("linux", "amd64")] = Runner(
-        base_url,
+    runners[("linux", "amd64", "chx")] = Runner(
+        base_url_chx,
         "binary-linux-amd64.tar.gz",
         "90faed7a8a39970b0281911ae57ad55607189c5894bd45cc09b3f81cef038311",
     )
-    runners[("linux", "i386")] = Runner(
-        base_url,
+    runners[("linux", "i386", "chx")] = Runner(
+        base_url_chx,
         "binary-linux-386.tar.gz",
         "463d169fbb11f109cc8cf948e072151344da5386d92e21f8f32d05c3df268c75",
     )
-    runners[("linux", "arm")] = Runner(
-        base_url,
+    runners[("linux", "arm", "chx")] = Runner(
+        base_url_chx,
         "binary-linux-arm.tar.gz",
         "f53618b413349a064944189afb4ede0b33570a75b0e070da94461e0c6f9c32a6",
     )
-    runners[("linux", "armv6")] = Runner(
-        base_url,
+    runners[("linux", "armv6", "chx")] = Runner(
+        base_url_chx,
         "binary-linux-arm5.tar.gz",
         "1ff0de471c1b92f51f42c955372c810fcb62e1484138e1ee40f416c7f6b0c292",
     )
-    runners[("linux", "arm64")] = Runner(
-        base_url,
+    runners[("linux", "arm64", "chx")] = Runner(
+        base_url_chx,
         "binary-linux-arm64.tar.gz",
         "7854554f85272e145a2a749f6992911b6efb39b4de39b35261830648cb0f5e13",
     )
-    runners[("linux", "ppc64el")] = Runner(
-        base_url,
+    runners[("linux", "ppc64el", "chx")] = Runner(
+        base_url_chx,
         "binary-linux-ppc64le.tar.gz",
         "381aa79e4a834574da6923fd9c2c1f8a5cca237d359f7e42344387625edfa3b4",
     )
-    runners[("linux", "riscv64")] = Runner(
-        base_url,
+    runners[("linux", "riscv64", "chx")] = Runner(
+        base_url_chx,
         "binary-linux-riscv64.tar.gz",
         "0ade6a82bf4d5a1368a67255a6bafd7d8a070e9e2958463c98fd35479e69ddf1",
     )
     # windows
-    runners[("windows", "amd64")] = Runner(
-        base_url,
+    runners[("windows", "amd64", "chx")] = Runner(
+        base_url_chx,
         "binary-windows-amd64.zip",
         "f1a93b75bd77058fc5fe10e3f4875f26488d5518b9ea94e8be028a4ef0d51ae3",
     )
-    runners[("windows", "i386")] = Runner(
-        base_url,
+    runners[("windows", "i386", "chx")] = Runner(
+        base_url_chx,
         "binary-windows-386.zip",
         "9f3af30e8c5ee3f2bc7422b8dc2581e5045a254632920672c2e41930eac8e63f",
     )
-    runners[("windows", "arm64")] = Runner(
-        base_url,
+    runners[("windows", "arm64", "chx")] = Runner(
+        base_url_chx,
         "binary-windows-arm64.zip",
         "5d6a5b9e9d0fec4453411c3fd3f978acf608974205f269ce3a3053a47f2a179f",
     )
@@ -126,6 +168,12 @@ if __name__ == "__main__":
         help="Architecture",
         required=True,
         choices=["amd64", "arm", "arm64", "armv6", "i386", "ppc64el", "riscv64"],
+    )
+    parser.add_argument(
+        "--runner",
+        help="Github or ChristopherHX runner",
+        required=True,
+        choices=["gh", "chx"],
     )
     parser.add_argument("--user", help="User for the service", required=True)
     parser.add_argument("--url", help="Github project url", required=True)
@@ -146,7 +194,7 @@ if __name__ == "__main__":
 
     # Runner
 
-    runner = runners[(args.os, args.arch)]
+    runner = runners[(args.os, args.arch, args.runner)]
 
     if args.os in ["macos", "linux"]:
 
