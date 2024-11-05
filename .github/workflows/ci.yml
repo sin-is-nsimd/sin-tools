@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+
+  unix:
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['test_runner']
+    runs-on: [ self-hosted, "${{matrix.os}}" ]
+    name: ${{matrix.os}}
+    steps:
+      - name: Clean
+        run: rm -rf *
+      - name: Clone sin-python
+        uses: actions/checkout@v3
+        with:
+          repository: 'sin-is-nsimd/sin-python'
+          path: 'sin-python'
+      - name: Clone sin-tools
+        uses: actions/checkout@v3
+        with:
+          repository: 'sin-is-nsimd/sin-tools'
+          path: 'sin-tools'
+      - name: Python version
+        run: python3 --version
+      - name: Tests
+        run: |
+          pwd
+          ls
