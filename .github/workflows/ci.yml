@@ -1,0 +1,70 @@
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+
+  unix:
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['debian10-amd64', 'debian11-amd64', 'debian12-amd64', 'debian13-amd64',
+             'debian10-i386', 'debian11-i386', 'debian12-i386', 'debian13-i386',
+             'debian10-arm64', 'debian11-arm64', 'debian12-arm64', 'debian13-arm64',
+             'debian10-armhf', 'debian11-armhf', 'debian12-armhf', 'debian13-armhf',
+             'debian10-ppc64el', 'debian11-ppc64el', 'debian12-ppc64el', 'debian13-ppc64el',
+             'raspios11-arm64', 'raspios12-arm64',
+             'raspios11-armhf', 'raspios12-armhf',
+             'macos14-amd64', 'macos15-amd64',
+             'macos14-arm64', 'macos15-arm64']
+    runs-on: [ self-hosted, "${{matrix.os}}" ]
+    name: ${{matrix.os}}
+    steps:
+      - name: Clean
+        run: rm -rf *
+      - name: Clone sin-python
+        uses: actions/checkout@v3
+        with:
+          repository: 'sin-is-nsimd/sin-python'
+          path: 'sin-python'
+      - name: Clone sin-tools
+        uses: actions/checkout@v3
+        with:
+          repository: 'sin-is-nsimd/sin-tools'
+          path: 'sin-tools'
+      - name: Python version
+        run: python3 --version
+      - name: Tests
+        run: |
+          cd sin-tools
+          ./github/add_runner.py --test
+
+  windows:
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['windows10-amd64', 'windows10-i386', 'windows11-amd64']
+    runs-on: [ self-hosted, "${{matrix.os}}" ]
+    name: ${{matrix.os}}
+    steps:
+      - name: Clean
+        run: Remove-Item * -Recurse -Force
+      - name: Clone sin-python
+        uses: actions/checkout@v3
+        with:
+          repository: 'sin-is-nsimd/sin-python'
+          path: 'sin-python'
+      - name: Clone sin-tools
+        uses: actions/checkout@v3
+        with:
+          repository: 'sin-is-nsimd/sin-tools'
+          path: 'sin-tools'
+      - name: Python version
+        run: python --version
+      - name: Tests
+        run: |
+          cd sin-tools
+          ./github/add_runner.py --test

@@ -3,7 +3,7 @@
 
 """Script to add a github action runner."""
 
-# Copyright © 2023-2024 Lénaïc Bagnères, lenaicb@singularity.fr
+# Copyright © 2023-2025 Lénaïc Bagnères, lenaicb@singularity.fr
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
