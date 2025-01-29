@@ -32,6 +32,7 @@ sys.path.append(
         os.path.dirname(os.path.realpath(__file__)), "..", "..", "sin-python", "src"
     )
 )
+import sin.fs
 import sin.sh
 import sin.term
 
@@ -53,39 +54,39 @@ if __name__ == "__main__":
     runners[("linux", "amd64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-linux-x64-2.321.0.tar.gz",
-        "93ac1b7ce743ee85b5d386f5c1787385ef07b3d7c728ff66ce0d3813d5f46900",
+        "ba46ba7ce3a4d7236b16fbe44419fb453bc08f866b24f04d549ec89f1722a29e",
     )
     runners[("linux", "arm", "gh")] = Runner(
         base_url_gh,
         "actions-runner-linux-arm-2.321.0.tar.gz",
-        "b2212dbceeea27daf3c90441352851b2d1afcb736a76c2435a715c21daaa6f18",
+        "2b96a4991ebf2b2076908a527a1a13db590217f9375267b5dd95f0300dde432b",
     )
     runners[("linux", "arm64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-linux-arm64-2.321.0.tar.gz",
-        "bec1832fe6d2ed75acf4b7d8f2ce1169239a913b84ab1ded028076c9fa5091b8",
+        "62cc5735d63057d8d07441507c3d6974e90c1854bdb33e9c8b26c0da086336e1",
     )
     # macos
     runners[("macos", "amd64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-osx-x64-2.321.0.tar.gz",
-        "11e610adc1c3721a806d2a439d03d143cceeda7a63e794bfe75b45da55e308df",
+        "b2c91416b3e4d579ae69fc2c381fc50dbda13f1b3fcc283187e2c75d1b173072",
     )
     runners[("macos", "arm64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-osx-arm64-2.321.0.tar.gz",
-        "14e2600c07ad76a1c9f6d9e498edf14f1c63f7f7f8d55de0653e450f64caa854",
+        "fbee07e42a134645d4f04f8146b0a3d0b3c948f0d6b2b9fa61f4318c1192ff79",
     )
     # windows
     runners[("windows", "amd64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-win-x64-2.321.0.zip",
-        "9eb133e8cb25e8319f1cbef3578c9ec5428a7af7c6ec0202ba6f9a9fddf663c0",
+        "88d754da46f4053aec9007d172020c1b75ab2e2049c08aef759b643316580bbc",
     )
     runners[("windows", "arm64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-win-arm64-2.321.0.zip",
-        "b92e6ce0facde2e7cedd502bb1b2ff99cebdb9c99caf77c65192986b8411e267",
+        "22df5a32a65a55e43dab38a200d4f72be0f9f5ce1839f5ad34e689a0d3ff0fb7",
     )
 
     # https://github.com/ChristopherHX/github-act-runner
@@ -139,17 +140,6 @@ if __name__ == "__main__":
         "binary-darwin-arm64.tar.gz",
         "e38951f5653cdb146ce9682234c986cd4fab10b46e7367c1852a1ab13aedb78c",
     )
-    # macos
-    runners[("macos", "amd64", "chx")] = Runner(
-        base_url_chx,
-        "binary-darwin-amd64.tar.gz",
-        "ab5fb1996a6c1b87543d15d1973916d9d7a672931667dc5793e4efc076609741",
-    )
-    runners[("macos", "arm64", "chx")] = Runner(
-        base_url_chx,
-        "binary-darwin-arm64.tar.gz",
-        "daaa2f3d3672eaec6921c23153551d2984d720a6bfa51916568ee2e379156203",
-    )
     # windows
     runners[("windows", "amd64", "chx")] = Runner(
         base_url_chx,
@@ -169,30 +159,76 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Add a new github action runner")
     parser.add_argument(
+        "--test",
+        help="Download archives, check sha256 and quit. All other options are ignored.",
+        required=False,
+        action="store_true",
+    )
+    required = "--test" not in sys.argv
+    parser.add_argument(
         "--os",
         help="Operating system",
-        required=True,
+        required=required,
         choices=["macos", "linux", "windows"],
     )
     parser.add_argument(
         "--arch",
         help="Architecture",
-        required=True,
+        required=required,
         choices=["amd64", "arm", "arm64", "armv6", "i386", "ppc64el", "riscv64"],
     )
     parser.add_argument(
         "--runner",
         help="Github or ChristopherHX runner",
-        required=True,
+        required=required,
         choices=["gh", "chx"],
     )
-    parser.add_argument("--user", help="User for the service", required=True)
-    parser.add_argument("--url", help="Github project url", required=True)
-    parser.add_argument("--token", help="Github token", required=True)
+    parser.add_argument("--user", help="User for the service", required=required)
+    parser.add_argument("--url", help="Github project url", required=required)
+    parser.add_argument("--token", help="Github token", required=required)
     parser.add_argument(
         "--directory", help="Output directory", default="HOME/actions-runner"
     )
     args = parser.parse_args()
+
+    # Test
+
+    if args.test:
+
+        if sys.platform != "linux":
+            print(sin.term.tag_error(), 'OS "' + sys.platform + '" is not implemented')
+            sys.exit(0)
+
+        r = 0
+        for os_arch_runner, runner in runners.items():
+            sin.sh.run_cmd(
+                "curl -o "
+                + runner.archive_file
+                + " -L "
+                + runner.url
+                + runner.archive_file
+            )
+            sha256 = sin.fs.sha256(runner.archive_file)
+            if sha256 == runner.sha256:
+                print(
+                    sin.term.tag_ok(),
+                    'sha256 of "' + runner.archive_file + '" is ' + runner.sha256,
+                )
+            else:
+                print(
+                    sin.term.tag_error(),
+                    'sha256 of "'
+                    + runner.archive_file
+                    + '" is '
+                    + sha256
+                    + " but expected one is "
+                    + runner.sha256,
+                )
+                r = 1
+            os.remove(runner.archive_file)
+        sys.exit(r)
+
+    # Directory
 
     if args.directory == "HOME/actions-runner":
         home = "/home" if args.os == "linux" else "/Users"
