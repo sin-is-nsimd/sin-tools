@@ -53,39 +53,39 @@ if __name__ == "__main__":
     runners[("linux", "amd64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-linux-x64-2.321.0.tar.gz",
-        "ba46ba7ce3a4d7236b16fbe44419fb453bc08f866b24f04d549ec89f1722a29e",
+        "93ac1b7ce743ee85b5d386f5c1787385ef07b3d7c728ff66ce0d3813d5f46900",
     )
     runners[("linux", "arm", "gh")] = Runner(
         base_url_gh,
         "actions-runner-linux-arm-2.321.0.tar.gz",
-        "48c817bf8cd71e70c3f05aadff43808d4b1bff52b9d80b941967d82affe175f2",
+        "b2212dbceeea27daf3c90441352851b2d1afcb736a76c2435a715c21daaa6f18",
     )
     runners[("linux", "arm64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-linux-arm64-2.321.0.tar.gz",
-        "62cc5735d63057d8d07441507c3d6974e90c1854bdb33e9c8b26c0da086336e1",
+        "bec1832fe6d2ed75acf4b7d8f2ce1169239a913b84ab1ded028076c9fa5091b8",
     )
     # macos
     runners[("macos", "amd64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-osx-x64-2.321.0.tar.gz",
-        "b2c91416b3e4d579ae69fc2c381fc50dbda13f1b3fcc283187e2c75d1b173072",
+        "11e610adc1c3721a806d2a439d03d143cceeda7a63e794bfe75b45da55e308df",
     )
     runners[("macos", "arm64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-osx-arm64-2.321.0.tar.gz",
-        "fbee07e42a134645d4f04f8146b0a3d0b3c948f0d6b2b9fa61f4318c1192ff79",
+        "14e2600c07ad76a1c9f6d9e498edf14f1c63f7f7f8d55de0653e450f64caa854",
     )
     # windows
     runners[("windows", "amd64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-win-x64-2.321.0.zip",
-        "88d754da46f4053aec9007d172020c1b75ab2e2049c08aef759b643316580bbc",
+        "9eb133e8cb25e8319f1cbef3578c9ec5428a7af7c6ec0202ba6f9a9fddf663c0",
     )
     runners[("windows", "arm64", "gh")] = Runner(
         base_url_gh,
         "actions-runner-win-arm64-2.321.0.zip",
-        "22df5a32a65a55e43dab38a200d4f72be0f9f5ce1839f5ad34e689a0d3ff0fb7",
+        "b92e6ce0facde2e7cedd502bb1b2ff99cebdb9c99caf77c65192986b8411e267",
     )
 
     # https://github.com/ChristopherHX/github-act-runner
@@ -138,6 +138,17 @@ if __name__ == "__main__":
         base_url_chx,
         "binary-darwin-arm64.tar.gz",
         "e38951f5653cdb146ce9682234c986cd4fab10b46e7367c1852a1ab13aedb78c",
+    )
+    # macos
+    runners[("macos", "amd64", "chx")] = Runner(
+        base_url_chx,
+        "binary-darwin-amd64.tar.gz",
+        "ab5fb1996a6c1b87543d15d1973916d9d7a672931667dc5793e4efc076609741",
+    )
+    runners[("macos", "arm64", "chx")] = Runner(
+        base_url_chx,
+        "binary-darwin-arm64.tar.gz",
+        "daaa2f3d3672eaec6921c23153551d2984d720a6bfa51916568ee2e379156203",
     )
     # windows
     runners[("windows", "amd64", "chx")] = Runner(
