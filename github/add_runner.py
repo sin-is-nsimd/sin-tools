@@ -3,7 +3,7 @@
 
 """Script to add a github action runner."""
 
-# Copyright © 2023-2024 Lénaïc Bagnères, lenaicb@singularity.fr
+# Copyright © 2023-2026 Lénaïc Bagnères, lenaicb@singularity.fr
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -91,70 +91,70 @@ if __name__ == "__main__":
 
     # https://github.com/ChristopherHX/github-act-runner
     base_url_chx = (
-        "https://github.com/ChristopherHX/github-act-runner/releases/download/v0.10.0/"
+        "https://github.com/ChristopherHX/github-act-runner/releases/download/v0.13.0/"
     )
     # linux
     runners[("linux", "amd64", "chx")] = Runner(
         base_url_chx,
         "binary-linux-amd64.tar.gz",
-        "90ede9bcbb4b2c8778855fa56672d1fb949cb5514b89e3d5fb6770b53ee98898",
+        "6c5b7776e0c93be08e65ceec0d0eca138b09c3d44255cddaecf5112623300376",
     )
     runners[("linux", "i386", "chx")] = Runner(
         base_url_chx,
         "binary-linux-386.tar.gz",
-        "d162e6dcc806e58f419dc497c14a7ceaf7150640e457a5ddda05ba1330e4a3dd",
+        "cb67eb1d26fee23079aac38daff4d3d2d202f22e69e82dfc37f5cb5f0edf2f40",
     )
     runners[("linux", "arm", "chx")] = Runner(
         base_url_chx,
         "binary-linux-arm.tar.gz",
-        "22e9eba589d6e645512833640243aa54f557791640e03fdab0e061bbce631a80",
+        "b0fc2aad98bf461be59b41cffd629534af97f9b2a9f57a8cee69cbfde78dac1d",
     )
     runners[("linux", "armv6", "chx")] = Runner(
         base_url_chx,
         "binary-linux-arm5.tar.gz",
-        "fbc066aaa163cb63c940268f93473dae90669ec908fec5baac6330cef600efcc",
+        "1721c7a5e10f9a1a34a26e2008c51dc14478f7465fb5bf4b35a06cbad729c62a",
     )
     runners[("linux", "arm64", "chx")] = Runner(
         base_url_chx,
         "binary-linux-arm64.tar.gz",
-        "643c35cb44343e94b0431a7c1fa42106705ce50c9b4ff0c505febed43e531fd2",
+        "5550d7c40f0888cec8ef5d79c39f977409f7b4e9185bf7f2ae74793eb42d3e9e",
     )
     runners[("linux", "ppc64el", "chx")] = Runner(
         base_url_chx,
         "binary-linux-ppc64le.tar.gz",
-        "3fcadbbdac61b41780a8a5f6b33d38b4e3d2b0d8b56f0e3cad5717c035c8f874",
+        "98741431fb56754db8d5bc33d4c71834b77431f2a69075a1cea075c305506fc0",
     )
     runners[("linux", "riscv64", "chx")] = Runner(
         base_url_chx,
         "binary-linux-riscv64.tar.gz",
-        "2af232e65ad497df1fba6684eeab451cf3ce8f21f5e18a0f6b7cce2c27dd1b01",
+        "be84104d5f8fcf12afe9fcc3541900f5ccd033687cfb9b32105208efa5a8234d",
     )
     # macos
     runners[("macos", "amd64", "chx")] = Runner(
         base_url_chx,
         "binary-darwin-amd64.tar.gz",
-        "05e704267f9326f80302a9fc9977397f5341b3c1865c982fbe41303c1e6dad2c",
+        "15d50311e29130dfd06a30930212f900f01a68996e7b909e46392821b1fb41c0",
     )
     runners[("macos", "arm64", "chx")] = Runner(
         base_url_chx,
         "binary-darwin-arm64.tar.gz",
-        "26fcff02ed8b0b2478608c728451c286ff8a4dc9e9e8526d2f843258b33e2fd1",
+        "5f527e07a18c65e33f47ceb855003029af16a15eef27d7458ee49fa77d6e56de",
     )
     # windows
     runners[("windows", "amd64", "chx")] = Runner(
         base_url_chx,
         "binary-windows-amd64.zip",
-        "12953723bcd87f20f2c27f74505d726bd117fa948d61752507d648cf73b04972",
+        "ec125dc766c4d51e069de29160c6497cecba63af618e0a0db1735475421725fc",
     )
     runners[("windows", "i386", "chx")] = Runner(
         base_url_chx,
         "binary-windows-386.zip",
-        "285fe580cdde591c54f3557271f5cfca287560f389f49c18d4af972ceb6fd371",
+        "618fb48b0e44681e48153615c1d6962769239f2ec1d481343fab0d04a7d9f5ab",
     )
     runners[("windows", "arm64", "chx")] = Runner(
         base_url_chx,
         "binary-windows-arm64.zip",
-        "b51e7e69084f739939980af78413c6cb727ea4ca0a9aef510dce5f31b1de63d6",
+        "721e99c2012e53249e565ca3e8d0c1d164a56ff86463ba63bbe94387ca1923d6",
     )
 
     parser = argparse.ArgumentParser(description="Add a new github action runner")
